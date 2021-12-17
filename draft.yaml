@@ -1,0 +1,37 @@
+models:
+  Employee:
+    name: string:100
+    identification: string:100 unique
+    birth: datetime
+    salary: unsignedinteger
+    martial_status: enum:single,married,divorced
+    bonus: decimal:8,2 nullable
+    order: unsignedinteger default:1 index
+    department_id: id foreign:departments.id
+    timestampsTz
+    relationships:
+      belongsToMany: Project
+      hasOne: ContactInfo
+  ContactInfo:
+    phone: string:100
+    email: string:100
+    relationships:
+      belongsTo: Employee
+  Department:
+    name: string:100
+    relationships:
+      hasMany: Employee
+  Project:
+    name: string:100
+    timestamps: false
+    softDeletesTz
+    relationships:
+      belongsToMany: Employee
+
+
+controllers: 
+  employee:
+    test:
+      query: where:salary where:name order:bonus limit:3
+    get:
+      find: id
